@@ -395,7 +395,7 @@ section:last-of-type{ border-bottom:none; }
 /* 프로필 사진을 다이어그램 위에 겹쳐서 표시 */
 .hero-photo{
   position:absolute;
-  left:50%;
+  left:10%; /*50*/
   bottom:0;
   transform:translateX(-50%);
   width:76%;
