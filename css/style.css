@@ -391,7 +391,7 @@ section:last-of-type{ border-bottom:none; }
   box-shadow:var(--shadow-lg);
   overflow:hidden;
 }
-.trace-card svg{ width:76%; height:auto; }
+.trace-card svg{ width:76%; max-width:340px; height:auto; }
 
 /* 프로필 사진을 다이어그램 위에 겹쳐서 표시 */
 .hero-photo{
