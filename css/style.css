@@ -378,6 +378,7 @@ section:last-of-type{ border-bottom:none; }
 /* signature network trace visual */
 .trace-wrap{
   position:relative;
+  width:100%;
   aspect-ratio:1/1;
   max-width:480px;
   margin:0 auto;
