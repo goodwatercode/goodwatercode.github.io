@@ -401,6 +401,8 @@ section:last-of-type{ border-bottom:none; }
    width:100%;
    max-width:750px;
    height:auto;
+
+    transform:translateY(-50px);
    
    filter:drop-shadow(0 20px 35px rgba(0,0,0,.18));
 }
