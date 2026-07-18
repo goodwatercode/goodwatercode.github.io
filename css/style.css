@@ -402,7 +402,7 @@ section:last-of-type{ border-bottom:none; }
    max-width:750px;
    height:auto;
    
-   transform:translateY(-50px);
+   transform:translateY(-70px);
    
    filter:drop-shadow(0 20px 35px rgba(0,0,0,.18));
 }
