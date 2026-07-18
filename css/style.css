@@ -318,7 +318,7 @@ section:last-of-type{ border-bottom:none; }
 }
 .hero .container{
   display:grid;
-  grid-template-columns:0.9fr 01.1fr;
+  grid-template-columns:0.9fr 1.1fr;
   gap:40px;
   align-items:center;
 }
@@ -380,19 +380,26 @@ section:last-of-type{ border-bottom:none; }
    display:flex;
    justify-content:center;
    align-items:flex-end;
+
+   width:100%;
+   height:100%;
 }
 .trace-card{
+   width:100%;
+   display:flex;
+   justify-content:center;
+   align-items:flex-end;
+
    background:transparent;
    border:none;
    box-shadow:none;
    overflow:visible;
-}
 .trace-card svg{ width:76%; max-width:340px; height:auto; }
 
 /* 프로필 사진을 다이어그램 위에 겹쳐서 표시 */
 .hero-photo{
    width:100%;
-   max-width:540px;
+   max-width:750px;
    height:auto;
    
    filter:drop-shadow(0 20px 35px rgba(0,0,0,.18));
@@ -402,39 +409,7 @@ html[data-theme="dark"] .hero-photo{
   filter:drop-shadow(0 22px 34px rgba(0,0,0,0.55));
 }
 
-/* 사진이 주인공이 되도록 배경 다이어그램은 은은하게 */
-
-.trace-card svg{
-  opacity:0.5;
-}
-html[data-theme="dark"] .trace-card svg{
-  opacity:0.35;
-}
-.trace-node-label{
-  font-family:var(--font-mono);
-  fill:var(--muted);
-  font-size:10px;
-  letter-spacing:0.03em;
-}
-.trace-line{
-  fill:none;
-  stroke:var(--border-strong);
-  stroke-width:1.5;
-}
-.trace-pulse{
-  fill:none;
-  stroke:var(--accent);
-  stroke-width:2;
-  stroke-linecap:round;
-  stroke-dasharray:6 220;
-  animation:trace-flow 3.6s linear infinite;
-}
-@keyframes trace-flow{
-  0%{ stroke-dashoffset:0; }
-  100%{ stroke-dashoffset:-450; }
-}
-.trace-node-box{ fill:var(--bg-raised); stroke:var(--border-strong); stroke-width:1.2; }
-.trace-node-dot{ fill:var(--ok); }
+/* (제거됨) 사진이 주인공이 되도록 배경 다이어그램은 은은하게 */
 
 /* ---------------------------------- */
 /* About                               */
