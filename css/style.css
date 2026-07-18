@@ -396,7 +396,7 @@ section:last-of-type{ border-bottom:none; }
    transform:none;
    
    width:100%;
-   max-width:500px;
+   max-width:650px;
    
    filter:drop-shadow(0 18px 28px rgba(0,0,0,.18));
 }
