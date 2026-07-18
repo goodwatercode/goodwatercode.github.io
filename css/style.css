@@ -11,7 +11,7 @@
   --bg:            #FAFAF9;
   --bg-raised:     #FFFFFF;
   --bg-sunken:     #F1F1EF;
-  --ink:           #12151A;
+  --ink:           #12151A;ㄹ
   --ink-soft:      #454B54;
   --muted:         #6B7280;
   --border:        #E4E4E7;
@@ -377,11 +377,10 @@ section:last-of-type{ border-bottom:none; }
 
 /* signature network trace visual */
 .trace-wrap{
-  position:relative;
-  width:100%;
-  aspect-ratio:1/1;
-  max-width:480px;
-  margin:0 auto;
+   position:relative;
+   display:flex;
+   justify-content:center;
+   align-items:center;
 }
 .trace-card{
    background:transparent;
@@ -393,9 +392,15 @@ section:last-of-type{ border-bottom:none; }
 
 /* 프로필 사진을 다이어그램 위에 겹쳐서 표시 */
 .hero-photo{
-   width:82%;
+   position:static;
+   transform:none;
+   
+   width:80%;
    max-width:360px;
+   
+   filter:drop-shadow(0 18px 28px rgba(0,0,0,.18));
 }
+/* 이부분도 지워야하는건가?*/
 html[data-theme="dark"] .hero-photo{
   filter:drop-shadow(0 22px 34px rgba(0,0,0,0.55));
 }
