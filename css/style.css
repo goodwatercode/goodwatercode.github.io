@@ -11,7 +11,7 @@
   --bg:            #FAFAF9;
   --bg-raised:     #FFFFFF;
   --bg-sunken:     #F1F1EF;
-  --ink:           #12151A;ㄹ
+  --ink:           #12151A;
   --ink-soft:      #454B54;
   --muted:         #6B7280;
   --border:        #E4E4E7;
@@ -402,7 +402,7 @@ section:last-of-type{ border-bottom:none; }
    max-width:750px;
    height:auto;
    
-   transform:translateY(-100px);
+   transform:translateY(-120px);
    
    filter:drop-shadow(0 20px 35px rgba(0,0,0,.18));
 }
