@@ -1,0 +1,186 @@
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ---------------- Year ---------------- */
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  /* ---------------- Theme toggle ---------------- */
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+
+  themeToggle?.addEventListener('click', () => {
+    const current = root.getAttribute('data-theme');
+    root.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  });
+
+  /* ---------------- Language toggle (EN <-> KO, excludes .hero) ---------------- */
+  const langToggle = document.getElementById('langToggle');
+  if (langToggle) {
+    const STORAGE_KEY = 'site-lang';
+
+    const getTranslatable = () =>
+      Array.from(document.querySelectorAll('[data-ko]')).filter(el => !el.closest('.hero'));
+
+    const applyLang = (lang) => {
+      getTranslatable().forEach(el => {
+        // Cache original English text the first time we touch this element
+        if (el.dataset.enCache === undefined) {
+          el.dataset.enCache = el.textContent;
+        }
+        el.textContent = lang === 'ko' ? el.dataset.ko : el.dataset.enCache;
+      });
+
+      document.documentElement.setAttribute('data-lang', lang);
+      langToggle.textContent = lang === 'ko' ? 'EN' : '한국어';
+      langToggle.setAttribute('aria-label', lang === 'ko' ? 'Switch to English' : '한국어로 보기');
+
+      try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) { /* ignore */ }
+    };
+
+    let currentLang = 'en';
+    try { currentLang = localStorage.getItem(STORAGE_KEY) || 'en'; } catch (e) { /* ignore */ }
+    applyLang(currentLang);
+
+    langToggle.addEventListener('click', () => {
+      currentLang = currentLang === 'ko' ? 'en' : 'ko';
+      applyLang(currentLang);
+    });
+  }
+
+  /* ---------------- Mobile nav ---------------- */
+  const navBurger = document.getElementById('navBurger');
+  const mobileNav = document.getElementById('mobileNav');
+  navBurger?.addEventListener('click', () => {
+    mobileNav.classList.toggle('open');
+  });
+  mobileNav?.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => mobileNav.classList.remove('open'));
+  });
+
+  /* ---------------- Session uptime meta ----------------
+  const sessionMeta = document.getElementById('sessionMeta');
+  const startTime = Date.now();
+  if (sessionMeta) {
+    setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
+      const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
+      const s = String(elapsed % 60).padStart(2, '0');
+      sessionMeta.textContent = `SESSION ${h}:${m}:${s}`;
+    }, 1000);
+  }*/
+
+  /* ---------------- Scroll reveal ---------------- */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ---------------- Nav active link (scrollspy) ---------------- */
+  const sections = document.querySelectorAll('section[id], header[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const id = entry.target.getAttribute('id');
+      const link = document.querySelector(`.nav-links a[href="#${id}"]`);
+      if (!link) return;
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4, rootMargin: '-72px 0px -50% 0px' });
+  sections.forEach(s => spy.observe(s));
+
+  /* ---------------- Project accordion ---------------- */
+  document.querySelectorAll('.project-card').forEach(card => {
+    const head = card.querySelector('.project-head');
+    const body = card.querySelector('.project-body');
+    const inner = card.querySelector('.project-body-inner');
+
+    head.addEventListener('click', () => {
+      const isOpen = card.classList.contains('open');
+
+      // close all others (single-open accordion feel, optional)
+      document.querySelectorAll('.project-card.open').forEach(other => {
+        if (other !== card) {
+          other.classList.remove('open');
+          other.querySelector('.project-body').style.maxHeight = null;
+        }
+      });
+
+      if (isOpen) {
+        card.classList.remove('open');
+        body.style.maxHeight = null;
+      } else {
+        card.classList.add('open');
+        body.style.maxHeight = inner.scrollHeight + 40 + 'px';
+      }
+    });
+  });
+
+  /* ---------------- Research paper cards ---------------- */
+  document.querySelectorAll('.paper-card').forEach(card => {
+    const btn = card.querySelector('.paper-toggle');
+    const detail = card.querySelector('.paper-detail');
+    const inner = card.querySelector('.paper-detail-inner');
+    const label = btn?.querySelector('span');
+
+    btn?.addEventListener('click', () => {
+      const isOpen = card.classList.contains('paper-open');
+      if (isOpen) {
+        card.classList.remove('paper-open');
+        detail.style.maxHeight = null;
+        btn.setAttribute('aria-expanded', 'false');
+        if (label) label.setAttribute('data-ko', '상세 보기');
+        if (label) label.textContent = document.documentElement.getAttribute('data-lang') === 'ko' ? '상세 보기' : 'View Details';
+      } else {
+        card.classList.add('paper-open');
+        detail.style.maxHeight = inner.scrollHeight + 32 + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+        if (label) label.setAttribute('data-ko', '접기');
+        if (label) label.textContent = document.documentElement.getAttribute('data-lang') === 'ko' ? '접기' : 'Collapse';
+      }
+    });
+  });
+
+  /* ---------------- Project filter ---------------- */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const projectCards = document.querySelectorAll('.project-card');
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+
+      projectCards.forEach(card => {
+        const cat = card.dataset.cat;
+        const show = filter === 'all' || cat === filter;
+        card.classList.toggle('hidden', !show);
+        if (!show && card.classList.contains('open')) {
+          card.classList.remove('open');
+          card.querySelector('.project-body').style.maxHeight = null;
+        }
+      });
+    });
+  });
+
+  /* ---------------- Back to top ---------------- */
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > 600);
+  });
+  backToTop?.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+});
